@@ -42,3 +42,4 @@ router
     })
 
     //export router for use in index.js
+    module.exports = router;
