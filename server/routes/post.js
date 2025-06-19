@@ -7,18 +7,16 @@ const router = express.Router();
 router
     .post('/createPost', async (req, res) => {
         try {
-            const { userId, content } = req.body;
-            const post = await createPost(userId, content);
+            const post = await Post.createPost(req.body.userId, req.body.content);
             res.send(post)
       } catch(error) {
         res.status(401).send({ message: error.message});
       }
     })
 
-    .post('/GetUserPosts', async (req, res) => {
+    .post('/getPost', async (req, res) => {
         try {
-            const { userId } = req.body;
-            const post = await GetUserPosts(userId);
+            const post = await Post.getPost(req.body.postId)
             res.send(post);
       } catch(error) {
         res.status(401).send({ message: error.message});
@@ -27,9 +25,8 @@ router
 
     .put('/updatePost', async (req, res) => {
         try {
-            const { postId, userId, content } = req.body;
-            const updatePost = await updatePost(postId, userId, content);
-            res.send(updatePost)
+            const post = await Post.updatePost(req.body.postId, req.body.content);
+            res.send(post);
       } catch(error) {
         res.status(401).send({ message: error.message});
       }
@@ -37,8 +34,7 @@ router
 
     .delete('/deletePost', async (req, res) => {
         try {
-            const {postId, userId } = req.body
-            await deletePost( postId, userId);
+            await deletePost(req.body.postId);
             res.send({ success: "Post deleted "});
         } catch(error) {
             res.status(401).send({ message: error.message });

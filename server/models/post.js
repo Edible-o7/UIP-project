@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 //Schema for entity
 const postSchema = new mongoose.Schema({
     content: { type: String, required: true},
-    UserId: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}
 
 })
 
@@ -13,24 +13,24 @@ const Post = mongoose.model("Post", postSchema);
 //CRUD Functions
 
 //Create a post
-async function createPost(content) {
-    const user = await User.FindById(userId);
-    if (!user) throw Error("User not found");
-
-    const post = await Post.create({ userId, content});
-    return post
+async function createPost(userId, content) {
+    const newPost = await Post.create({
+        userId: userId, 
+        content: content
+    })
+    return newPost
 }
 
-//READ - Getting all posts by a user
-async function GetUserPosts(userId) {
-    return await Post.find({ userId }).populate("userId", "username");
+//READ - Read a post by ID
+async function getPost(postId) {
+    return await Post.findById(postId)
 }
 
-//UPDATE - Updating an existing post
+//UPDATE - Updating an existing post's content
 
-async function updatePost(postId, userId, newContent) {
-    const post = await Post.updateOne({"_id": postId, userId: userId}, { content: newContent }, );
-    return post;
+async function updatePost(postId, newContent) {
+    const updatedPost = await Post.updateOne({"_id": postId }, { $set: {content: newContent }, });
+    return updatedPost;
 }
 
 //DELETE - Deleting a post
@@ -39,4 +39,4 @@ async function deletePost(postId) {
 };
 
 //export all functions we want to access in route file
-module.exports = {createPost, GetUserPosts, updatePost, deletePost};
+module.exports = {createPost, getPost, updatePost, deletePost};
