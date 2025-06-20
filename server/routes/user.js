@@ -3,7 +3,7 @@ const express = require("express");
 const User = require('../models/user'); //accesses functions in user model file
 const router = express.Router();
 
-//create all routes to access dataase
+//create all routes to access database
 router
     .post('/login', async (req, res) => {
         try {

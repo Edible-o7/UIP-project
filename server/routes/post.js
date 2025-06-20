@@ -3,7 +3,7 @@ const express = require("express");
 const Post = require('../models/post'); //accesses functions in post model file
 const router = express.Router();
 
-//create all routes to access dataase
+//create all routes to access database
 router
     .post('/createPost', async (req, res) => {
         try {

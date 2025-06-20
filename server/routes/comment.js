@@ -1,9 +1,9 @@
 //import needed libraries
 const express = require("express");
-const Comment = require('../models/comment'); //accesses functions in post model file
+const Comment = require('../models/comment'); //accesses functions in comment model file
 const router = express.Router();
 
-//create all routes to access dataase
+//create all routes to access database
 router
     .post('/createComment', async (req, res) => {
         try {
