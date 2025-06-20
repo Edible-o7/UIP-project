@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     username: { type: String, unique: true, required: true},
     password: { type: String, required: true},
+    email: { type: String, required: true},
     followers: [String],
     following: [String]
 })
@@ -14,13 +15,14 @@ const User = mongoose.model("User", userSchema);
 //CRUD functions
 
 //Create a user
-async function register(username, password) {
+async function register(username, password, email) {
     const user = await getUser(username);
     if(user) throw Error('Username already in use');
 
     const newUser = await User.create({
         username: username,
-        password: password
+        password: password,
+        email: email,
     })
     return newUser;
 }
