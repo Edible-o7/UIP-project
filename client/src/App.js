@@ -1,24 +1,25 @@
 
 import './App.css';
-import Navbar from './components/Navbar.js';
-import Register from './components/Register.js';
-import Login from './components/Login.js'
-import Text from './components/Text.js'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from './components/pages/Navbar.js';
+import Register from './components/pages/Register.js';
+import Login from './components/pages/Login.js'
+import Text from './components/pages/Text.js'
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      Ignore this mess, I'm just throwing stuff at the wall
-      <Text />
-      <br />
-      <h2>Register here</h2>
-      <Register />
-      <br />
-      <h2>Login here</h2>
-      <Login />
 
-      Hello World!!
+<BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Navbar />}>
+        <Route index element={<Text />}/>
+        <Route path="register" element={<Register />}/>
+        <Route path="login" element={<Login />} />
+      </Route>
+    </Routes>
+</BrowserRouter>
+
     </div>
   );
 }
