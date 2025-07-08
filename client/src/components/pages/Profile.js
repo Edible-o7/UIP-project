@@ -74,6 +74,7 @@ const Profile = () => {
           rows={4}
           required
         />
+        <div></div>
         <button type="submit">Post</button>
       </form>
 
