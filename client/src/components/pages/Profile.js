@@ -17,7 +17,7 @@ const Profile = () => {
 
   const fetchUserPosts = async (userId) => {
     try {
-      const response = await fetch('/posts/getPosts', {
+      const response = await fetch('/post/getPosts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ const Profile = () => {
     if (!newPost.trim()) return;
 
     try {
-      const response = await fetch('/posts/createPost', {
+      const response = await fetch('/post/createPost', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -60,6 +60,25 @@ const Profile = () => {
     }
   };
 
+  const handleDelete = async (postId) => {
+  try {
+    const response = await fetch('/post/deletePost', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ postId })
+    });
+
+    if (!response.ok) throw new Error(await response.text());
+
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+  } catch (error) {
+    console.error('Error deleting post:', error.message);
+  }
+};
+
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -74,7 +93,7 @@ const Profile = () => {
           rows={4}
           required
         />
-        <div></div>
+        <br></br>
         <button type="submit">Post</button>
       </form>
 
@@ -84,10 +103,12 @@ const Profile = () => {
           posts.map((post) => (
             <div key={post._id} className="post-card">
               <p>{post.content}</p>
+              <button onClick={() => handleDelete(post._id)}>Delete</button>
             </div>
           ))
         ) : (
           <p>No posts yet.</p>
+
         )}
       </div>
     </div>
