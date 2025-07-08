@@ -5,6 +5,7 @@ import Navbar from './components/pages/Navbar.js';
 import Register from './components/pages/Register.js';
 import Login from './components/pages/Login.js'
 import Text from './components/pages/Text.js'
+import Profile from './components/pages/Profile.js'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route index element={<Text />}/>
         <Route path="register" element={<Register />}/>
         <Route path="login" element={<Login />} />
+        <Route path="profile" element={<Profile profile={Profile}/>} />
       </Route>
     </Routes>
 </BrowserRouter>
