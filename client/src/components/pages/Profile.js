@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { fetchData } from '../../main';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -15,22 +16,13 @@ const Profile = () => {
     setLoading(false);
   }, []);
 
-  const fetchUserPosts = async (userId) => {
+const fetchUserPosts = async (userId) => {
     try {
-      const response = await fetch('/post/getPosts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userId })
-      });
-
-      if (!response.ok) throw new Error(await response.text());
-
-      const data = await response.json();
+      const data = await fetchData('/post/getPosts', { userId }, 'POST');
       setPosts(data);
-    } catch (error) {
-      console.error('Error fetching posts:', error.message);
+    } 
+    catch (error) {
+      console.error('Error fetching posts:', error.message || error);
     }
   };
 
@@ -39,44 +31,28 @@ const Profile = () => {
     if (!newPost.trim()) return;
 
     try {
-      const response = await fetch('/post/createPost', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userId: user._id,
-          content: newPost
-        })
-      });
+      const newCreatedPost = await fetchData('/post/createPost', {
+        userId: user._id,
+        content: newPost
+      }, 'POST');
 
-      if (!response.ok) throw new Error(await response.text());
-
-      const newCreatedPost = await response.json();
       setPosts([newCreatedPost, ...posts]);
       setNewPost('');
-    } catch (error) {
-      console.error('Error creating post:', error.message);
+    } 
+    catch (error) {
+      console.error('Error creating post:', error.message || error);
     }
   };
 
   const handleDelete = async (postId) => {
-  try {
-    const response = await fetch('/post/deletePost', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ postId })
-    });
-
-    if (!response.ok) throw new Error(await response.text());
-
-    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
-  } catch (error) {
-    console.error('Error deleting post:', error.message);
-  }
-};
+    try {
+      await fetchData('/post/deletePost', { postId }, 'DELETE');
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    } 
+    catch (error) {
+      console.error('Error deleting post:', error.message || error);
+    }
+  };
 
 
   if (loading) return <div>Loading...</div>;
